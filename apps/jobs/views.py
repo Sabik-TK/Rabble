@@ -1,6 +1,7 @@
 from .models import Application,Job,JobSkill
 from .serializers import ApplicationSerializer,JobSerializer,JobSkillSerializer
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import AllowAny
 
 # Create your views here.
 class JobViewSet(ModelViewSet):

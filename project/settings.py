@@ -167,6 +167,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #REST_FRAMEWORK
 
 REST_FRAMEWORK = {
+
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
   
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
@@ -206,12 +209,6 @@ REST_FRAMEWORK = {
 
 
 AUTH_USER_MODEL = 'account.Account'
-
-
-
-# 430182600968-vcl49dmqfihrvchcr9hnkr7e0r93hskv.apps.googleusercontent.com
-
-# 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
 
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'

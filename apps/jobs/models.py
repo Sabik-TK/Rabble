@@ -1,4 +1,5 @@
 from django.db import models
+from apps.account.models import Account
 from apps.company.models import Company
 from apps.userprofile.models import Profile
 from apps.userprofile.models import Skill
