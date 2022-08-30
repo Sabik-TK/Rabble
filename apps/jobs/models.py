@@ -1,5 +1,4 @@
 from django.db import models
-from apps.account.models import Account
 from apps.company.models import Company
 from apps.userprofile.models import Profile
 from apps.userprofile.models import Skill
@@ -25,8 +24,8 @@ class Job(models.Model):
     employment_type = models.CharField(max_length=10, choices=TYPES)
     description     = models.TextField(blank=True, null=True)
     city            = models.CharField(max_length=100)
-    sallary_max     = models.IntegerField(null=True)
-    sallary_min     = models.IntegerField(null=True)
+    salary_max      = models.IntegerField(null=True)
+    salary_min      = models.IntegerField(null=True)
     status          = models.CharField(default='Hiring',choices=HIRING_STATUS, max_length=10)
     created         = models.DateTimeField(auto_now_add=True)
 
@@ -54,9 +53,14 @@ class Application(models.Model):
         ('Selected','Selected')
     )
 
-    job = models.ForeignKey(Job,on_delete=models.CASCADE)
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    status = models.CharField(default='Applied',max_length=10, choices=STATUS_CHOICES)
+    job     = models.ForeignKey(Job,on_delete=models.CASCADE, related_name='applicants')
+    user    = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    status  = models.CharField(default='Applied',max_length=10, choices=STATUS_CHOICES)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['job','user']
+        unique_together = ('job', 'user',)
 
     def __str__(self):
         return self.user.user.email

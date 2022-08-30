@@ -4,7 +4,7 @@ from apps.userprofile.serializers import ProfileSerializer
 
 class AccountSerializer(serializers.ModelSerializer):
 
-    profile         = ProfileSerializer(read_only=True)
+    # profile         = ProfileSerializer(read_only=True)
 
     class Meta:
         model = Account

@@ -11,10 +11,17 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny,BasePermission
+from rest_framework.filters import SearchFilter,OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
-class IsCreationOrIsAuthenticated(BasePermission):
 
+
+class IsCreationOrIsAuthenticated(BasePermission):
+    """
+    All users can create instances, but only authenticated users can view them
+    it is an inverse of  IsAuthenticatedOrReadOnly  permission
+    """
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             if view.action == 'create':
@@ -32,9 +39,14 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class   = AccountSerializer
     permission_classes = [IsCreationOrIsAuthenticated]
 
+    filter_backends    = [DjangoFilterBackend,SearchFilter,OrderingFilter]
 
-    
+    filterset_fields   = ['is_active']
+    search_fields      = ['mobile','email']
+    ordering_fields    = ['created', 'id']
 
+
+    #To send actiavtion e-mail
     @action(detail=True, methods=['get'])
     def activate_user(self,request,pk=None):
         user = self.get_object()
@@ -60,6 +72,7 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(data)
 
 
+    #To deactiavte e-mail
     @action(detail=True, methods=['get'])
     def deactivate_user(self,request,pk=None):
         user = self.get_object()
@@ -71,6 +84,7 @@ class UserViewSet(viewsets.ModelViewSet):
             'user'   :  serializer.data  })
 
 
+#To actiavte e-mail
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def activate(request, uidb64, token):

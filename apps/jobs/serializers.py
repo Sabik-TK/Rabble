@@ -30,7 +30,8 @@ class JobSkillSerializer(serializers.ModelSerializer):
 class JobSerializer(serializers.ModelSerializer):
 
     preferred_skills = serializers.StringRelatedField(many=True,read_only=True)
-    
+    applicants       = serializers.StringRelatedField(many=True,read_only=True)
+
     class Meta:
         model = Job
         fields = '__all__'
