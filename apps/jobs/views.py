@@ -11,20 +11,7 @@ from .serializers import (
 
 from django_filters.rest_framework import (
     DjangoFilterBackend,
-    RangeFilter,
-    FilterSet,
     )
-
-
-class SalaryFilter(FilterSet):
-    """
-    Custom filter for finding jobs between salary ranges
-    """
-    salary_max = RangeFilter()
-
-    class Meta:
-        model  = Job
-        fields = ['salary_max']
 
 
 class JobViewSet(ModelViewSet):
@@ -33,9 +20,12 @@ class JobViewSet(ModelViewSet):
     queryset           = Job.objects.all().order_by('id')
     serializer_class   = JobSerializer
 
-    filter_class       = SalaryFilter
     filter_backends    = [DjangoFilterBackend,SearchFilter,OrderingFilter]
+    
+    def get_filterset_kwargs(self):
+        return {
 
+        }
     filterset_fields = [
         'company__company_name',
         'company__industry',
@@ -53,10 +43,9 @@ class JobViewSet(ModelViewSet):
         ]
 
     ordering_fields = [
-        'salary_max',
         'created',
+        'salary',
         ]
-
 
 class JobSkillViewSet(ModelViewSet):
 

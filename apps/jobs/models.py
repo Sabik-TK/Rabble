@@ -18,14 +18,12 @@ class Job(models.Model):
         ('Stopped','Stopped')
     )
 
-   
     company         = models.ForeignKey(Company, on_delete=models.CASCADE)
     title           = models.CharField(max_length=150)
     employment_type = models.CharField(max_length=10, choices=TYPES)
     description     = models.TextField(blank=True, null=True)
     city            = models.CharField(max_length=100)
-    salary_max      = models.IntegerField(null=True)
-    salary_min      = models.IntegerField(null=True)
+    salary      = models.IntegerField(null=True)
     status          = models.CharField(default='Hiring',choices=HIRING_STATUS, max_length=10)
     created         = models.DateTimeField(auto_now_add=True)
 
